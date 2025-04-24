@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket de Consulta</title>
+  <link rel="stylesheet" href="../css/estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Maven+Pro&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f5f5;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .ticket {
+      width: 58mm;
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .ticket h2, .ticket h3 {
+      text-align: center;
+      margin: 5px 0;
+    }
+
+    .ticket p {
+      font-size: 12px;
+      margin: 3px 0;
+    }
+
+    .seccion {
+      margin-top: 10px;
+      border-top: 1px dashed #A5D6A7;
+      padding-top: 8px;
+    }
+
+    .botones {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 15px;
+    }
+
+    .botones button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .botones button:hover {
+      background-color: #45a049;
+    }
+
+    @media print {
+      * {
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .botones {
+        display: none !important;
+      }
+
+      body {
+        background: white !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticket">
+    <img src="../img/logo_color.png" alt="Logo" style="width: 40px; display: block; margin: 0 auto;">
+    <h2>Documento Sanitario</h2>
+    <p style="text-align: center;">Documento de registro guardado en la nube.<br>Preséntelo en la cita o consulta.</p>
+
+    <div class="seccion">
+      <h3>Información del paciente</h3>
+      <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+      <p><strong>Número de cita:</strong> <span id="numeroCita"></span></p>
+      <p><strong>Fecha:</strong> <span id="fecha"></span></p>
+      <p><strong>ID del paciente:</strong> <span id="id"></span></p>
+      <p><strong>Sala de cita:</strong> Consulta médica</p>
+    </div>
+
+    <div class="seccion">
+      <h3>Estado de la cita</h3>
+      <p><strong>Asunto:</strong> <span id="asunto"></span></p>
+      <p><strong>Estado del paciente:</strong> <span id="descripcion"></span></p>
+      <p><strong>Receta:</strong> <span id="receta"></span></p>
+      <div style="border: 1px dashed #ccc; padding: 5px; margin-top: 5px; font-size: 11px;">
+        Puedes acceder a tus datos entrando en stelar.com o el portal de tu comunidad.
+      </div>
+    </div>
+
+    <div class="seccion" id="seccion-ingreso" style="display: none;">
+      <h3>Datos de Ingreso</h3>
+      <p><strong>¿Ingreso?:</strong> <span id="ingreso"></span></p>
+      <p><strong>Sala:</strong> <span id="sala"></span></p>
+      <p><strong>Motivo:</strong> <span id="motivo"></span></p>
+      <p><strong>Categoría:</strong> <span id="categoria"></span></p>
+      <p><strong>Categoría personalizada:</strong> <span id="categoriaPersonalizada"></span></p>
+      <p><strong>Fecha de ingreso:</strong> <span id="fechaIngreso"></span></p>
+    </div>
+
+    <div class="seccion">
+      <h3>Nota</h3>
+      <p><span id="notaDoctor"></span></p>
+    </div>
+
+    <div class="botones">
+      <button onclick="window.print()">Imprimir Ticket</button>
+      <button onclick="window.location.href='../panel_medico/iniciar_consulta.html'">Volver</button>
+      <button onclick="window.location.href='../panel_medico/panel.html'" class="btn-panel">Terminar Cita</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const datos = JSON.parse(localStorage.getItem("ticketConsultaData"));
+      if (!datos) {
+        alert("No hay datos de consulta. Por favor vuelve al formulario.");
+        window.location.href = "../panel_medico/iniciar_consulta.html";
+        return;
+      }
+
+      document.getElementById("nombre").textContent = datos.nombre || "";
+      document.getElementById("numeroCita").textContent = datos.numeroCita || "";
+      document.getElementById("fecha").textContent = datos.fecha || "";
+      document.getElementById("id").textContent = datos.id || "";
+      document.getElementById("asunto").textContent = datos.asunto || "";
+      document.getElementById("descripcion").textContent = datos.descripcion || "";
+      document.getElementById("receta").textContent = datos.receta || "";
+      document.getElementById("notaDoctor").textContent = datos.notaDoctor || "";
+
+      if (datos.ingreso === "Sí") {
+        document.getElementById("seccion-ingreso").style.display = "block";
+        document.getElementById("ingreso").textContent = "Sí";
+        document.getElementById("sala").textContent = datos.areaIngreso || "No especificado";
+        document.getElementById("motivo").textContent = datos.motivoIngreso || "No especificado";
+        document.getElementById("categoria").textContent = datos.categoria || "No especificado";
+        document.getElementById("categoriaPersonalizada").textContent = datos.categoriaPersonalizada || "No especificado";
+        document.getElementById("fechaIngreso").textContent = datos.fechaIngreso || "No especificado";
+      }
+    });
+  </script>
+
+</body>
+</html>
