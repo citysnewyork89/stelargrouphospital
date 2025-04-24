@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Maven+Pro&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #E3F2FD;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-box {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #1565C0;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Maven Pro', sans-serif;
+    }
+
+    button {
+      background-color: #1565C0;
+      color: white;
+      padding: 12px;
+      border: none;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0d47a1;
+    }
+
+    .mensaje-error {
+      margin-top: 10px;
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Acceso al panel del médico</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="usuario">Usuario o ID del doctor:</label>
+        <input type="text" id="usuario" name="usuario" required />
+      </div>
+      <div class="form-group">
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required />
+      </div>
+      <button type="submit">Entrar</button>
+      <div class="mensaje-error" id="mensajeError"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById('usuario').value.trim();
+      const contrasena = document.getElementById('contrasena').value.trim();
+      const mensaje = document.getElementById('mensajeError');
+
+      const credenciales = {
+        doctor: 'doctor',
+        laura: '1973',
+        admin: 'admin'
+      };
+
+      if (usuario in credenciales) {
+        if (credenciales[usuario] === contrasena) {
+          alert('Inicio de sesión exitoso');
+          window.location.href = 'panel.html'; // redirige al panel
+        } else {
+          mensaje.textContent = 'Error con el registro. Usuario o contraseña incorrectos.';
+          mensaje.style.display = 'block';
+        }
+      } else {
+        mensaje.textContent = 'Error al iniciar sesión. Póngase en contacto con mantenimiento.';
+        mensaje.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
